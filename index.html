@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Star Airlines - CSS-Only Booking System</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        background-color: #f0f2f5;
+      }
+
+      .page-container {
+        min-height: 100vh;
+        background-color: #f0f2f5;
+      }
+
+      .page-section {
+        display: none;
+        padding: 40px 20px;
+      }
+
+      #welcome,
+      .page-section:target {
+        display: block;
+      }
+
+      .main-header {
+        background-image: linear-gradient(
+            rgba(0, 20, 50, 0.7),
+            rgba(0, 20, 50, 0.7)
+          ),
+          url("images/background.jpg");
+        background-size: cover;
+        background-position: center;
+        padding: 20px;
+        text-align: center;
+        color: white;
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+      }
+      .main-header h1 {
+        margin: 0;
+        font-size: 3rem;
+        font-weight: 700;
+      }
+      .main-nav {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        display: inline-block;
+        margin-top: 20px;
+      }
+      .main-nav a {
+        color: white;
+        text-decoration: none;
+        padding: 12px 25px;
+        display: inline-block;
+        font-weight: 500;
+        transition: background-color 0.3s;
+      }
+      .main-nav a:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+
+      .content-box {
+        background: white;
+        padding: 30px 40px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        max-width: 900px;
+        margin: 20px auto;
+        text-align: center;
+      }
+      .content-box h2 {
+        margin-top: 0;
+        font-size: 1.8rem;
+        color: #1c294c;
+      }
+      .form-group {
+        text-align: left;
+        margin-bottom: 20px;
+      }
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #333;
+      }
+      .form-group input[type="text"],
+      .form-group input[type="date"] {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-sizing: border-box;
+        font-size: 1rem;
+      }
+      .btn {
+        display: inline-block;
+        background-color: #007bff;
+        color: white !important;
+        padding: 12px 30px;
+        text-decoration: none;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        cursor: pointer;
+        margin-top: 15px;
+        font-weight: 500;
+        transition: background-color 0.3s, transform 0.2s;
+      }
+      .btn:hover {
+        background-color: #0056b3;
+        transform: translateY(-2px);
+      }
+      .btn.secondary {
+        background-color: #6c757d;
+      }
+      .btn.secondary:hover {
+        background-color: #5a6268;
+      }
+      .btn.danger {
+        background-color: #d90429;
+      }
+      .btn.danger:hover {
+        background-color: #b10321;
+      }
+
+      .hidden-toggle {
+        display: none;
+      }
+      .hidden-content {
+        display: none;
+        margin-top: 25px;
+        padding-top: 25px;
+        border-top: 1px solid #eee;
+      }
+      .hidden-toggle:checked ~ .hidden-content {
+        display: block;
+      }
+
+      .cards-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 25px;
+        margin-top: 30px;
+      }
+      .dest-card {
+        color: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        min-height: 250px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 20px;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+        transition: transform 0.3s;
+      }
+      .dest-card:hover {
+        transform: scale(1.05);
+      }
+      .dest-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.8) 20%,
+          transparent
+        );
+      }
+      .dest-card * {
+        position: relative;
+        z-index: 1;
+      }
+      .dest-card h3 {
+        margin: 0 0 5px 0;
+        font-size: 1.8rem;
+      }
+      .dest-card .btn {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+        margin-top: 10px;
+        background-color: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(5px);
+      }
+      #london-card {
+        background-image: url("images/london.jpg");
+      }
+      #paris-card {
+        background-image: url("images/paris.jpg");
+      }
+      #new-york-card {
+        background-image: url("images/new-york.jpg");
+      }
+
+      .option-card {
+        display: block;
+        text-decoration: none;
+        color: #333;
+        background-color: #f8f9fa;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 15px;
+        text-align: left;
+        transition: border-color 0.3s, box-shadow 0.3s;
+      }
+      .option-card:hover {
+        border-color: #007bff;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      }
+      .option-card h3 {
+        margin-top: 0;
+        color: #0056b3;
+      }
+
+      .results-box {
+        text-align: left;
+        background-color: #f8f9fa;
+        padding: 25px;
+        border-radius: 8px;
+        margin-top: 20px;
+      }
+      .results-box h3,
+      .results-box h4 {
+        text-align: center;
+        margin-top: 0;
+      }
+      .results-box h4 {
+        font-weight: 500;
+        color: #555;
+      }
+      .results-box p {
+        margin: 10px 0;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 10px;
+        font-size: 1.1rem;
+      }
+      .results-box p:last-child {
+        border-bottom: none;
+      }
+      .results-box strong {
+        color: #0056b3;
+      }
+      .flight-option {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .booking-ref-box {
+        background-color: #e0efff;
+        border: 2px dashed #007bff;
+        padding: 20px;
+        margin-top: 20px;
+        text-align: center;
+        border-radius: 8px;
+      }
+      .booking-ref-box p {
+        font-size: 1.1rem;
+        border: none;
+        margin: 0;
+      }
+      .booking-ref-box strong {
+        font-size: 1.5rem;
+        color: #d90429;
+      }
+      .fare-computation p {
+        font-size: 1.2rem;
+        text-align: right;
+      }
+      .fare-computation .final-fare {
+        font-weight: bold;
+        color: #1c294c;
+        font-size: 1.4rem;
+        border-top: 2px solid #ccc;
+      }
+
+      .main-footer {
+        background-color: #1c294c;
+        color: white;
+        text-align: center;
+        padding: 20px;
+        font-size: 0.9rem;
+      }
+      .main-footer p {
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-container">
+      <header class="main-header">
+        <h1>Star Airlines</h1>
+        <nav class="main-nav">
+          <a href="#welcome">Home</a>
+          <a href="#book">Book a Ticket</a>
+          <a href="#manage">Manage Booking</a>
+          <a href="#status">Flight Status</a>
+        </nav>
+      </header>
+
+      <section id="welcome" class="page-section">
+        <div class="content-box">
+          <h2>Explore Popular Destinations</h2>
+          <div class="cards-container">
+            <div id="london-card" class="dest-card">
+              <h3>London</h3>
+              <a href="#book" class="btn">Book a Flight</a>
+            </div>
+            <div id="paris-card" class="dest-card">
+              <h3>Paris</h3>
+              <a href="#book" class="btn">Book a Flight</a>
+            </div>
+            <div id="new-york-card" class="dest-card">
+              <h3>New York</h3>
+              <a href="#book" class="btn">Book a Flight</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="book" class="page-section">
+        <div class="content-box" style="max-width: 600px">
+          <h2>Book Your Flight</h2>
+          <div class="form-group">
+            <label for="from-loc">From:</label
+            ><input type="text" id="from-loc" placeholder="e.g., Abu Dhabi" />
+          </div>
+          <div class="form-group">
+            <label for="to-loc">To:</label
+            ><input type="text" id="to-loc" placeholder="e.g., London" />
+          </div>
+          <a href="#route-results" class="btn">Search Flights</a>
+        </div>
+      </section>
+
+      <section id="route-results" class="page-section">
+        <div class="content-box">
+          <h2>Available Flights</h2>
+          <h4>
+            Showing flights from <strong>Abu Dhabi</strong> to
+            <strong>London</strong>
+          </h4>
+          <div class="results-box">
+            <div class="flight-option">
+              <p>Date: 2025-11-10 | Fare: $750</p>
+              <a href="#payment-method" class="btn">Select</a>
+            </div>
+            <div class="flight-option">
+              <p>Date: 2025-11-12 | Fare: $730</p>
+              <a href="#payment-method" class="btn">Select</a>
+            </div>
+          </div>
+          <a href="#book" class="btn secondary">Change Search</a>
+        </div>
+      </section>
+
+      <section id="payment-method" class="page-section">
+        <div class="content-box" style="max-width: 650px">
+          <h2>Choose Payment Method</h2>
+          <div class="results-box">
+            <p>
+              You are booking a flight to London for <strong>$750 USD</strong>.
+            </p>
+          </div>
+          <a href="#credit-card-payment" class="option-card"
+            ><h3>Credit / Debit Card</h3>
+            <p>Pay securely with Visa, MasterCard, or AMEX.</p></a
+          >
+          <a href="#invoice" class="option-card"
+            ><h3>PayPal</h3>
+            <p>Pay with your PayPal account balance or linked cards.</p></a
+          >
+          <a href="#route-results" class="btn secondary"
+            >Back to Flight Selection</a
+          >
+        </div>
+      </section>
+
+      <!-- ===== NEW CREDIT CARD FORM SECTION ===== -->
+      <section id="credit-card-payment" class="page-section">
+        <div class="content-box" style="max-width: 600px">
+          <h2>Enter Credit Card Details</h2>
+          <div class="form-group" style="margin-top: 25px; text-align: left">
+            <label for="card-name">Cardholder Name</label>
+            <input type="text" id="card-name" placeholder="e.g., John M. Doe" />
+          </div>
+          <div class="form-group">
+            <label for="card-number">Card Number</label>
+            <input
+              type="text"
+              id="card-number"
+              placeholder="1111 2222 3333 4444"
+            />
+          </div>
+          <div class="form-group" style="display: flex; gap: 20px">
+            <div style="flex: 2">
+              <label for="card-expiry">Expiry Date</label>
+              <input type="text" id="card-expiry" placeholder="MM/YY" />
+            </div>
+            <div style="flex: 1">
+              <label for="card-cvv">CVV</label>
+              <input type="text" id="card-cvv" placeholder="123" />
+            </div>
+          </div>
+          <a href="#invoice" class="btn">Pay $750.00</a>
+          <a href="#payment-method" class="btn secondary"
+            >Back to Payment Options</a
+          >
+        </div>
+      </section>
+      <!-- ===== END OF NEW SECTION ===== -->
+
+      <section id="invoice" class="page-section">
+        <div class="content-box" style="max-width: 600px">
+          <h2>Booking Confirmed!</h2>
+          <div class="results-box">
+            <h3>Your Confirmed Itinerary</h3>
+            <p><strong>From:</strong> Abu Dhabi</p>
+            <p><strong>To:</strong> London</p>
+            <p><strong>Date:</strong> 2025-11-10</p>
+          </div>
+          <div class="booking-ref-box">
+            <p>Your Booking Reference is:</p>
+            <strong>SA-4F5G6H</strong>
+            <p style="font-size: 0.9rem; margin-top: 10px">
+              Please save this reference for managing your booking.
+            </p>
+          </div>
+          <a href="#welcome" class="btn">Return to Main Menu</a>
+        </div>
+      </section>
+
+      <section id="manage" class="page-section">
+        <div class="content-box" style="max-width: 600px">
+          <h2>Manage Your Booking</h2>
+          <div class="form-group">
+            <label for="booking-ref">Enter Your Booking Reference:</label
+            ><input
+              type="text"
+              id="booking-ref"
+              placeholder="e.g., SA-4F5G6H"
+            />
+          </div>
+          <label for="show-booking-toggle" class="btn">Retrieve Booking</label>
+          <input
+            type="checkbox"
+            id="show-booking-toggle"
+            class="hidden-toggle"
+          />
+          <div class="hidden-content results-box">
+            <h3>Your Current Booking</h3>
+            <p>
+              <strong>Flight:</strong> SA101 to London |
+              <strong>Booking Ref:</strong> SA-4F5G6H
+            </p>
+            <a href="#reschedule-page" class="btn">Reschedule Flight</a>
+            <a href="#cancel-confirm-page" class="btn danger">Cancel Flight</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="reschedule-page" class="page-section">
+        <div class="content-box">
+          <h2>Reschedule: Select New Flight</h2>
+          <p>
+            Your original flight is on 2025-11-10 (Fare: $750). Please select an
+            alternative.
+          </p>
+          <div class="results-box">
+            <div class="flight-option">
+              <p>Date: 2025-11-15 | New Fare: $800</p>
+              <a href="#fare-difference-page" class="btn">Select</a>
+            </div>
+            <div class="flight-option">
+              <p>Date: 2025-11-17 | New Fare: $750</p>
+              <a href="#fare-difference-page" class="btn">Select</a>
+            </div>
+          </div>
+          <a href="#manage" class="btn secondary">Back to Booking</a>
+        </div>
+      </section>
+
+      <section id="fare-difference-page" class="page-section">
+        <div class="content-box" style="max-width: 600px">
+          <h2>Compute Fare Difference</h2>
+          <div class="results-box fare-computation">
+            <p>Original Fare: $750.00</p>
+            <p>New Fare: $800.00</p>
+            <hr />
+            <p class="final-fare">Fare Difference: +$50.00</p>
+          </div>
+          <a href="#payment-method" class="btn">Proceed to Pay Difference</a>
+        </div>
+      </section>
+
+      <section id="cancel-confirm-page" class="page-section">
+        <div class="content-box" style="max-width: 600px">
+          <h2>Confirm Cancellation</h2>
+          <p>Are you sure you want to cancel your flight SA101 to London?</p>
+          <a href="#refund-computation-page" class="btn danger"
+            >Yes, Cancel This Flight</a
+          >
+          <a href="#manage" class="btn secondary">No, Go Back</a>
+        </div>
+      </section>
+
+      <section id="refund-computation-page" class="page-section">
+        <div class="content-box" style="max-width: 600px">
+          <h2>Compute Refund</h2>
+          <p>Your flight has been cancelled.</p>
+          <div class="results-box fare-computation">
+            <p>Original Fare: $750.00</p>
+            <p>Cancellation Fee: -$70.00</p>
+            <hr />
+            <p class="final-fare">Computed Refund: $680.00</p>
+          </div>
+          <a href="#refund-method-page" class="btn">Choose Refund Method</a>
+        </div>
+      </section>
+
+      <section id="refund-method-page" class="page-section">
+        <div class="content-box" style="max-width: 650px">
+          <h2>Choose Refund Method</h2>
+          <div class="results-box">
+            <p>
+              Your refund amount is <strong>$680 USD</strong>. Please choose how
+              you would like to receive it.
+            </p>
+          </div>
+          <a href="#welcome" class="option-card"
+            ><h3>Original Payment Method</h3>
+            <p>
+              The refund will be sent back to the card or PayPal account used.
+            </p></a
+          >
+          <a href="#welcome" class="option-card"
+            ><h3>Airline Credit</h3>
+            <p>
+              Receive the amount as a credit voucher for future travel with Star
+              Airlines.
+            </p></a
+          >
+        </div>
+      </section>
+
+      <section id="status" class="page-section">
+        <div class="content-box" style="max-width: 600px">
+          <h2>Check Flight Status</h2>
+          <div class="form-group">
+            <label for="flight-num">Enter Flight Number:</label
+            ><input type="text" id="flight-num" placeholder="e.g., SA101" />
+          </div>
+          <label for="show-status-toggle" class="btn">Check Status</label>
+          <input
+            type="checkbox"
+            id="show-status-toggle"
+            class="hidden-toggle"
+          />
+          <div class="hidden-content">
+            <div class="results-box">
+              <h3>Status for Flight SA101</h3>
+              <p><strong>Status:</strong> On Time</p>
+              <p><strong>Check-in:</strong> Initiated / Open</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer class="main-footer">
+      <p>© 2025 Star Airlines. All Rights Reserved.</p>
+    </footer>
+  </body>
+</html>
